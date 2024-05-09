@@ -1,36 +1,49 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+// import axios from 'axios';
 
 const ItemCreatePage = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    price: '',
-    image: ''
+    name: "",
+    description: "",
+    price: "",
+    image: "",
   });
 
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
-  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  // Submit the form data
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:8080/api/items', formData);
-      setMessage(`Item created successfully: ${response.data.name}`);
-      setFormData({ name: '', description: '', price: '', image: '' }); // Reset form
-    } catch (error) {
-      setMessage('Error creating item. Please try again.');
-      console.error('Error creating item:', error);
-    }
+    const url = "http://localhost:8080/items";
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", // Ensure the server accepts JSON
+      },
+      body: JSON.stringify(formData), // Convert formData to JSON
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setMessage(`Item created successfully: ${data.name}`);
+        setFormData({ name: "", description: "", price: "", image: "" }); // Clear form data
+      })
+      .catch((error) => {
+        setMessage("Error creating item. Please try again.");
+        console.error("Error creating item:", error);
+      });
   };
 
   return (

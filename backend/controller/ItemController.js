@@ -1,20 +1,24 @@
-import Items from './../models/Item.js'
+import Items from "./../models/Item.js";
 
 const ItemController = {
   async getPaginatedItems(req, res) {
-    const { page = 1, limit = 20 } = req.query;
+    const { page = 1, limit = 6 } = req.query; // Update the default limit
     const offset = (page - 1) * limit;
 
     try {
-      const items = await Items.findAll({
+      const { count, rows: items } = await Items.findAndCountAll({
         offset,
         limit: parseInt(limit),
-        order: [['createdAt', 'DESC']]
+        order: [["createdAt", "DESC"]],
       });
-      res.json({ items });
+
+      res.json({
+        items,
+        totalItems: count, // Provide the total count
+      });
     } catch (error) {
-      console.error('Error fetching items:', error);
-      res.status(500).json({ error: 'Error fetching items' });
+      console.error("Error fetching items:", error);
+      res.status(500).json({ error: "Error fetching items" });
     }
   },
 
@@ -25,8 +29,8 @@ const ItemController = {
       const newItem = await Items.create({ name, description, price, image });
       res.json(newItem);
     } catch (error) {
-      console.error('Error adding new item:', error);
-      res.status(500).json({ error: 'Error adding new item' });
+      console.error("Error adding new item:", error);
+      res.status(500).json({ error: "Error adding new item" });
     }
   },
 
@@ -37,7 +41,7 @@ const ItemController = {
     try {
       const item = await Items.findByPk(id);
       if (!item) {
-        return res.status(404).json({ error: 'Item not found' });
+        return res.status(404).json({ error: "Item not found" });
       }
 
       item.name = name || item.name;
@@ -48,8 +52,8 @@ const ItemController = {
 
       res.json(item);
     } catch (error) {
-      console.error('Error updating item:', error);
-      res.status(500).json({ error: 'Error updating item' });
+      console.error("Error updating item:", error);
+      res.status(500).json({ error: "Error updating item" });
     }
   },
 
@@ -59,20 +63,21 @@ const ItemController = {
     try {
       const item = await Items.findByPk(id);
       if (!item) {
-        return res.status(404).json({ error: 'Item not found' });
+        return res.status(404).json({ error: "Item not found" });
       }
 
       await item.destroy();
-      res.json({ message: 'Item deleted successfully' });
+      res.json({ message: "Item deleted successfully" });
     } catch (error) {
-      console.error('Error deleting item:', error);
-      res.status(500).json({ error: 'Error deleting item' });
+      console.error("Error deleting item:", error);
+      res.status(500).json({ error: "Error deleting item" });
     }
   },
 
   async searchItems(req, res) {
     const { query } = req.query;
-    if (!query) return res.status(400).json({ error: 'Query parameter is missing' });
+    if (!query)
+      return res.status(400).json({ error: "Query parameter is missing" });
 
     try {
       const q = `%${query}%`;
@@ -82,16 +87,16 @@ const ItemController = {
             { name: { [Sequelize.Op.like]: q } },
             { description: { [Sequelize.Op.like]: q } },
             { price: { [Sequelize.Op.like]: q } },
-            { image: { [Sequelize.Op.like]: q } }
-          ]
-        }
+            { image: { [Sequelize.Op.like]: q } },
+          ],
+        },
       });
       res.json({ items });
     } catch (error) {
-      console.error('Error searching items:', error);
-      res.status(500).json({ error: 'Error searching items' });
+      console.error("Error searching items:", error);
+      res.status(500).json({ error: "Error searching items" });
     }
-  }
+  },
 };
 
 export default ItemController;
