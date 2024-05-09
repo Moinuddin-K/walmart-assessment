@@ -1,0 +1,27 @@
+/* pages/ItemSearchPage.css */
+.ItemGrid {
+    display: flex;
+    flex-wrap: wrap; /* Allows multiple rows */
+    justify-content: flex-start; /* Aligns items to the left */
+    gap: 15px; /* Adds spacing between items */
+    padding: 0;
+    list-style: none;
+  }
+  
+  .ItemCard {
+    flex: 1 1 calc(33.33% - 10px); /* Adjusts for 3 items per row */
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 250px; /* Ensure items aren't too wide */
+  }
+  
+  img {
+    width: 100%;
+    border-radius: 10px;
+  }
+  
