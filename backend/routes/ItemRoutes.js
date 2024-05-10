@@ -6,6 +6,5 @@ router.get('/items', ItemController.getPaginatedItems);
 router.post('/items', ItemController.addItem);
 router.put('/items/:id', ItemController.updateItem);
 router.delete('/items/:id', ItemController.deleteItem);
-router.get('/search', ItemController.searchItems);
 
 export default router;

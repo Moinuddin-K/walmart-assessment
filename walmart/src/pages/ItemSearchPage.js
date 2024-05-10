@@ -25,14 +25,8 @@ const ItemSearchPage = () => {
         if (data.items.length < limit) {
           setHasMore(false);
         }
-        setAllItems((prev) => {
-          const existingIds = new Set(prev.map((item) => item.id));
-          return [...prev, ...data.items.filter((item) => !existingIds.has(item.id))];
-        });
-        setDisplayItems((prev) => {
-          const existingIds = new Set(prev.map((item) => item.id));
-          return [...prev, ...data.items.filter((item) => !existingIds.has(item.id))];
-        });
+        setAllItems((prev) => [...prev, ...data.items]);
+        setDisplayItems((prev) => [...prev, ...data.items]);
         setLoading(false); // Mark as done loading
       })
       .catch((err) => {
@@ -43,13 +37,13 @@ const ItemSearchPage = () => {
 
   // Initial load of the first 8 items
   useEffect(() => {
-    console.log("here");
     fetchItems(1, 8);
   }, []);
 
-  // Observe the sentinel element to load more items
   useEffect(() => {
     if (!hasMore) return; // Stop observing if no more items to load
+
+    const currentObserverRef = observerRef.current; 
 
     const handleObserver = (entries) => {
       const target = entries[0];
@@ -64,13 +58,14 @@ const ItemSearchPage = () => {
       threshold: 1.0, // Fully visible
     });
 
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
+    if (currentObserverRef) {
+      observer.observe(currentObserverRef); // Use the local variable
     }
 
+    // Cleanup function
     return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current);
+      if (currentObserverRef) {
+        observer.unobserve(currentObserverRef); // Use the local variable
       }
     };
   }, [hasMore]);
@@ -92,7 +87,7 @@ const ItemSearchPage = () => {
           item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
           item.price.toString().includes(searchQuery) ||
-          item.image.toString().toLowerCase().includes(searchQuery)
+          item.image.toString().toLowerCase().includes(searchQuery.toLowerCase())
       );
       setDisplayItems(filteredItems);
     }
@@ -113,4 +108,3 @@ const ItemSearchPage = () => {
 };
 
 export default ItemSearchPage;
-
