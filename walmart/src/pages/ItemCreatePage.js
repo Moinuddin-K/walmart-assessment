@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import axios from 'axios';
 
 const ItemCreatePage = () => {
   const [formData, setFormData] = useState({
@@ -26,9 +25,9 @@ const ItemCreatePage = () => {
     fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json", // Ensure the server accepts JSON
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData), // Convert formData to JSON
+      body: JSON.stringify(formData),
     })
       .then((response) => {
         if (!response.ok) {
@@ -38,7 +37,7 @@ const ItemCreatePage = () => {
       })
       .then((data) => {
         setMessage(`Item created successfully: ${data.name}`);
-        setFormData({ name: "", description: "", price: "", image: "" }); // Clear form data
+        setFormData({ name: "", description: "", price: "", image: "" });
       })
       .catch((error) => {
         setMessage("Error creating item. Please try again.");

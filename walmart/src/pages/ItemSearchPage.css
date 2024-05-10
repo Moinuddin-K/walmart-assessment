@@ -1,15 +1,15 @@
 /* pages/ItemSearchPage.css */
 .ItemGrid {
     display: flex;
-    flex-wrap: wrap; /* Allows multiple rows */
-    justify-content: flex-start; /* Aligns items to the left */
-    gap: 15px; /* Adds spacing between items */
+    flex-wrap: wrap;
+    justify-content: flex-start; 
+    gap: 15px; 
     padding: 0;
     list-style: none;
   }
   
   .ItemCard {
-    flex: 1 1 calc(33.33% - 10px); /* Adjusts for 3 items per row */
+    flex: 1 1 calc(33.33% - 10px);
     margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -17,11 +17,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 250px; /* Ensure items aren't too wide */
+    max-width: 250px;
   }
   
   img {
     width: 100%;
+    max-height: 140px;
     border-radius: 10px;
   }
   
