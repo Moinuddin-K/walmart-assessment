@@ -4,15 +4,14 @@ import ItemCard from "../components/ItemCard";
 import "./ItemSearchPage.css";
 
 const ItemSearchPage = () => {
-  const [allItems, setAllItems] = useState([]); // Store all items fetched
-  const [displayItems, setDisplayItems] = useState([]); // Items currently displayed
-  const [page, setPage] = useState(1); // Track current page number
-  const [hasMore, setHasMore] = useState(true); // Keep track of more data
+  const [allItems, setAllItems] = useState([]); 
+  const [displayItems, setDisplayItems] = useState([]); 
+  const [page, setPage] = useState(1); 
+  const [hasMore, setHasMore] = useState(true); 
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const observerRef = useRef(); // To keep track of the observer for the sentinel
+  const observerRef = useRef(); 
 
-  // Function to fetch items from the backend
   const fetchItems = (pageNumber = 1, limit = 8) => {
     fetch(`http://localhost:8080/items?page=${pageNumber}&limit=${limit}`)
       .then((response) => {
@@ -27,7 +26,7 @@ const ItemSearchPage = () => {
         }
         setAllItems((prev) => [...prev, ...data.items]);
         setDisplayItems((prev) => [...prev, ...data.items]);
-        setLoading(false); // Mark as done loading
+        setLoading(false); 
       })
       .catch((err) => {
         console.error("Error fetching items:", err);
@@ -35,49 +34,44 @@ const ItemSearchPage = () => {
       });
   };
 
-  // Initial load of the first 8 items
   useEffect(() => {
     fetchItems(1, 8);
   }, []);
 
   useEffect(() => {
-    if (!hasMore) return; // Stop observing if no more items to load
-
-    const currentObserverRef = observerRef.current; 
+    if (!hasMore) return; 
+    const currentObserverRef = observerRef.current;
 
     const handleObserver = (entries) => {
       const target = entries[0];
       if (target.isIntersecting) {
         setLoading(true);
-        setPage((prev) => prev + 1); // Increment page to fetch next batch
+        setPage((prev) => prev + 1);
       }
     };
 
     const observer = new IntersectionObserver(handleObserver, {
       rootMargin: "0px",
-      threshold: 1.0, // Fully visible
+      threshold: 1.0, 
     });
 
     if (currentObserverRef) {
-      observer.observe(currentObserverRef); // Use the local variable
+      observer.observe(currentObserverRef); 
     }
 
-    // Cleanup function
     return () => {
       if (currentObserverRef) {
-        observer.unobserve(currentObserverRef); // Use the local variable
+        observer.unobserve(currentObserverRef); 
       }
     };
   }, [hasMore]);
 
-  // Fetch the next batch of items whenever the page number increases
   useEffect(() => {
     if (page > 1) {
       fetchItems(page, 8);
     }
   }, [page]);
 
-  // Update displayed items based on the search query
   useEffect(() => {
     if (searchQuery === "") {
       setDisplayItems(allItems);
@@ -87,14 +81,17 @@ const ItemSearchPage = () => {
           item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
           item.price.toString().includes(searchQuery) ||
-          item.image.toString().toLowerCase().includes(searchQuery.toLowerCase())
+          item.image
+            .toString()
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
       );
       setDisplayItems(filteredItems);
     }
   }, [searchQuery, allItems]);
 
   return (
-    <div>
+    <div className="container">
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <ul className="ItemGrid">
         {displayItems.map((item) => (

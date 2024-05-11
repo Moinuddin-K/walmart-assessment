@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { TextField, Button, Typography, Paper, Grid, Container } from '@mui/material';
 
 const ItemCreatePage = () => {
   const [formData, setFormData] = useState({
@@ -46,46 +47,75 @@ const ItemCreatePage = () => {
   };
 
   return (
-    <div className="ItemCreatePage">
-      <h1>Create a New Item</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-          placeholder="Item Name"
-          required
-        />
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleInputChange}
-          placeholder="Item Description"
-          required
-        />
-        <input
-          type="number"
-          name="price"
-          value={formData.price}
-          onChange={handleInputChange}
-          placeholder="Price"
-          step="0.01"
-          required
-        />
-        <input
-          type="text"
-          name="image"
-          value={formData.image}
-          onChange={handleInputChange}
-          placeholder="Image URL"
-          required
-        />
-        <button type="submit">Create Item</button>
-      </form>
-      {message && <p>{message}</p>}
-    </div>
+    <Container component="main" maxWidth="sm">
+      <Paper elevation={6} sx={{ mt: 3, p: 2 }}>
+        <Typography component="h1" variant="h5">
+          Create a New Item
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Item Name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Item Description"
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                required
+                multiline
+                rows={4}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Price"
+                name="price"
+                value={formData.price}
+                onChange={handleInputChange}
+                required
+                type="number"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Image URL"
+                name="image"
+                value={formData.image}
+                onChange={handleInputChange}
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button type="submit" fullWidth variant="contained" color="primary">
+                Create Item
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+        {message && (
+          <Typography color="textSecondary" mt={2}>
+            {message}
+          </Typography>
+        )}
+      </Paper>
+    </Container>
   );
 };
 
 export default ItemCreatePage;
+
