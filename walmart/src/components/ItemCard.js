@@ -7,10 +7,10 @@ const ItemCard = ({ item }) => {
         <Typography variant="h6" sx={{ margin: 1  }}>
             {item.name}
         </Typography>
-        <Typography variant="p" sx={{ margin: 2 }}>
+        <Typography variant="p" sx={{ margin: 2, fontWeight: 100}}>
             {item.description}
         </Typography>
-        <Typography variant="p" sx={{ margin: 1  }}>
+        <Typography variant="p" sx={{ margin: 1 , fontWeight: 500 }}>
             Price: ${item.price}
         </Typography>
       </li>

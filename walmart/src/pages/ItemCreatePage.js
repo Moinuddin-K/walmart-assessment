@@ -100,7 +100,7 @@ const ItemCreatePage = () => {
                 required
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item>
               <Button type="submit" fullWidth variant="contained" color="primary">
                 Create Item
               </Button>

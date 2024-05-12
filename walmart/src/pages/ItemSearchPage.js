@@ -4,13 +4,13 @@ import ItemCard from "../components/ItemCard";
 import "./ItemSearchPage.css";
 
 const ItemSearchPage = () => {
-  const [allItems, setAllItems] = useState([]); 
-  const [displayItems, setDisplayItems] = useState([]); 
-  const [page, setPage] = useState(1); 
-  const [hasMore, setHasMore] = useState(true); 
+  const [allItems, setAllItems] = useState([]);
+  const [displayItems, setDisplayItems] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const observerRef = useRef(); 
+  const observerRef = useRef();
 
   const fetchItems = (pageNumber = 1, limit = 8) => {
     fetch(`http://localhost:8080/items?page=${pageNumber}&limit=${limit}`)
@@ -26,7 +26,7 @@ const ItemSearchPage = () => {
         }
         setAllItems((prev) => [...prev, ...data.items]);
         setDisplayItems((prev) => [...prev, ...data.items]);
-        setLoading(false); 
+        setLoading(false);
       })
       .catch((err) => {
         console.error("Error fetching items:", err);
@@ -39,7 +39,7 @@ const ItemSearchPage = () => {
   }, []);
 
   useEffect(() => {
-    if (!hasMore) return; 
+    if (!hasMore) return;
     const currentObserverRef = observerRef.current;
 
     const handleObserver = (entries) => {
@@ -52,16 +52,16 @@ const ItemSearchPage = () => {
 
     const observer = new IntersectionObserver(handleObserver, {
       rootMargin: "0px",
-      threshold: 1.0, 
+      threshold: 1.0,
     });
 
     if (currentObserverRef) {
-      observer.observe(currentObserverRef); 
+      observer.observe(currentObserverRef);
     }
 
     return () => {
       if (currentObserverRef) {
-        observer.unobserve(currentObserverRef); 
+        observer.unobserve(currentObserverRef);
       }
     };
   }, [hasMore]);
@@ -98,7 +98,7 @@ const ItemSearchPage = () => {
           <ItemCard key={item.id} item={item} />
         ))}
       </ul>
-      <div ref={observerRef} className="sentinel"></div>
+      <div ref={observerRef}></div>
       {loading && <p>Loading items...</p>}
     </div>
   );
