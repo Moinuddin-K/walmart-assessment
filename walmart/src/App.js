@@ -1,18 +1,14 @@
-// App.js
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import './App.css';
-import Header from './components/Header';
-import ItemSearchPage from './pages/ItemSearchPage';
-import ItemCreatePage from './pages/ItemCreatePage';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import ItemSearchPage from "./pages/ItemSearchPage";
+import ItemCreatePage from "./pages/ItemCreatePage";
+import Header from './components/Header'
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <Header />
-        <nav>
-          <Link to="/">Search</Link> | <Link to="/create">Create Item</Link>
-        </nav>
+        <Header/>
         <Routes>
           <Route path="/" element={<ItemSearchPage />} />
           <Route path="/create" element={<ItemCreatePage />} />
