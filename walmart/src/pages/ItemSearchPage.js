@@ -78,11 +78,12 @@ const ItemSearchPage = () => {
     } else {
       const filteredItems = allItems.filter(
         (item) =>
-          item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.price.toString().includes(searchQuery) ||
+          item.name.toLowerCase().includes(searchQuery.trim().toLowerCase()) ||
+          item.description.toLowerCase().includes(searchQuery.trim().toLowerCase()) ||
+          item.price.toString().trim().includes(searchQuery) ||
           item.image
             .toString()
+            .trim()
             .toLowerCase()
             .includes(searchQuery.toLowerCase())
       );

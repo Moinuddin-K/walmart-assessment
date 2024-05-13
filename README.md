@@ -4,7 +4,7 @@
 
 ## Contents
   - [Introduction](#objective)
-  - [Requirements 📝](#requirements)
+  - [Requirements](#requirements)
   - [Prerequisites](#prerequisites)
   - [Instructions to run the Project](#instructions-to-run-the-project)
   - [Scripts](#scripts)
